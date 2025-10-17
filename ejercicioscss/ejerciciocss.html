@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es"> <!-- Cambié a "es" ya que tu contenido está en español -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leyenda de Machu Picchu</title>
+    <style>
+        h1{
+            display: block; /* Valor agregado */
+            border: 1px solid rgb(0, 255, 21);
+            text-align: center;
+            text-decoration: underline;
+        }
+        img{
+            padding: 10px;
+            border: 1px solid red;
+            float: left;
+            margin: 0 10px 10px 0;
+            width: 200px; /* Añadí tamaño para visualización */
+            height: 150px;
+        }
+        .caja{
+            border: 2px solid skyblue;
+            width: 30%;
+            float: left;
+            margin: 5px;
+            padding: 10px;
+            box-sizing: border-box; /* Para que el padding no afecte el width */
+        }
+        .col2{
+            box-shadow: 5px 5px 5px red;
+        }
+        .caja3{
+            border: 2px solid rgb(128, 128, 128);
+            width: 30%;
+            float: right;
+            margin: 5px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .cara{
+            background: yellow;
+            border-radius: 100%;
+            width: 200px;
+            height: 200px;
+            position: relative;
+            margin: 20px auto; /* Centrar la cara */
+            clear: both; /* Limpiar floats anteriores */
+        }
+        .cara .ojo1{
+            width: 20px; /* Aumenté el tamaño para mejor visibilidad */
+            height: 20px;
+            background-color: black;
+            border-radius: 100%;
+            position: absolute;
+            top:55px;
+            left: 50px;
+        }
+        .cara .ojo2{
+            width: 20px;
+            height: 20px;
+            background-color: black;
+            border-radius: 100%;
+            position: absolute;
+            top:55px;
+            left: 130px; /* Ajusté la posición */
+        } 
+        .cara .voca{
+            width: 80px; /* Ajusté el tamaño */
+            height: 15px;
+            background-color: black;
+            position: absolute;
+            top:130px;
+            left: 60px; /* Centré mejor */
+            border-radius: 10px; /* Añadí bordes redondeados */
+        }
+        
+        /* Limpiar floats después de los elementos flotantes */
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <h1>Leyenda de Machu Picchu</h1>
+    
+    <!-- Imagen corregida - asegúrate de tener un archivo en esa ruta -->
+    <img src="/imagenes/descarga.jpg" alt="Paisaje de Machu Picchu">
+    
+    <p>Hace mucho tiempo, cuando los cóndores aún conversaban con las estrellas y los ríos llevaban mensajes de los dioses, un joven llamado Amaru vivía en lo alto de las montañas del Cusco. Amaru era curioso, siempre preguntaba por qué las nubes abrazaban las cumbres y por qué el sol parecía detenerse sobre una ciudad escondida entre los picos verdes.
+
+    Una noche, mientras soñaba, el Apus —los espíritus de las montañas— le hablaron:
+    —"Debes proteger el lugar donde el sol y la luna se encuentran. Allí nacerá la sabiduría de tu pueblo."
+
+    Guiado por los cóndores, Amaru llegó hasta una ciudad de piedra que parecía crecer del mismo corazón de la montaña. Allí encontró templos que se alineaban con el solsticio, terrazas que alimentaban la tierra y una calma que parecía eterna. Era Machu Picchu, la ciudad sagrada.
+    </p>
+    
+    <div class="clearfix"> <!-- Contenedor para limpiar floats -->
+        <div class="caja col1">Pero no todo estaba en paz. Una sombra oscura, hecha de viento frío y desconfianza, quería borrar la memoria de aquel sitio. Amaru, recordando las palabras de los Apus, se enfrentó a la sombra. Con la ayuda del río Vilcanota y la fuerza de los cóndores, logró sellarla en las profundidades de la montaña.</div>
+        <div class="caja col2">Pero no todo estaba en paz. Una sombra oscura, hecha de viento frío y desconfianza, quería borrar la memoria de aquel sitio. Amaru, recordando las palabras de los Apus, se enfrentó a la sombra. Con la ayuda del río Vilcanota y la fuerza de los cóndores, logró sellarla en las profundidades de la montaña.</div>
+        <div class="caja3">Pero no todo estaba en paz. Una sombra oscura, hecha de viento frío y desconfianza, quería borrar la memoria de aquel sitio. Amaru, recordando las palabras de los Apus, se enfrentó a la sombra. Con la ayuda del río Vilcanota y la fuerza de los cóndores, logró sellarla en las profundidades de la montaña.</div>
+    </div>
+    
+    <div class="cara">
+        <div class="ojo1"></div>
+        <div class="ojo2"></div>
+        <div class="voca"></div>
+    </div>
+    
+    <a href="../index.html">Ir a la página principal</a>
+</body>
+</html>

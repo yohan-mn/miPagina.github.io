@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Científica</title>
+    <script>
+        function suma(){
+            let a = parseFloat(document.querySelector("#vara").value);
+            let b = parseFloat(document.querySelector("#varb").value);
+            let c = a + b;
+            document.querySelector("#varc").value = c;
+            agregarHistorial(`${a} + ${b} = ${c}`);
+        }
+
+        function resta(){
+            let a = parseFloat(document.querySelector("#vara").value);
+            let b = parseFloat(document.querySelector("#varb").value);
+            let c = a - b;
+            document.querySelector("#varc").value = c;
+            agregarHistorial(`${a} − ${b} = ${c}`);
+        }
+
+        function multiplicacion(){
+            let a = parseFloat(document.querySelector("#vara").value);
+            let b = parseFloat(document.querySelector("#varb").value);
+            let c = a * b;
+            document.querySelector("#varc").value = c;
+            agregarHistorial(`${a} × ${b} = ${c}`);
+        }
+
+        function division(){
+            let a = parseFloat(document.querySelector("#vara").value);
+            let b = parseFloat(document.querySelector("#varb").value);
+            if (b === 0) {
+                document.querySelector("#varc").value = "Error: División por cero";
+                return;
+            }
+            let c = a / b;
+            document.querySelector("#varc").value = c;
+            agregarHistorial(`${a} ÷ ${b} = ${c}`);
+        }
+
+        function exponente(){
+            let a = parseFloat(document.querySelector("#vara").value);
+            let b = parseFloat(document.querySelector("#varb").value);
+            let c = Math.pow(a, b);
+            document.querySelector("#varc").value = c;
+            agregarHistorial(`${a}^${b} = ${c}`);
+        }
+
+        function insertarPi(campo) {
+            document.querySelector(`#${campo}`).value = Math.PI;
+        }
+
+        function insertarE(campo) {
+            document.querySelector(`#${campo}`).value = Math.E;
+        }
+
+        function raizCuadrada() {
+            let a = parseFloat(document.querySelector("#vara").value);
+            let c = Math.sqrt(a);
+            document.querySelector("#varc").value = c;
+            agregarHistorial(`√${a} = ${c}`);
+        }
+
+        function logaritmo() {
+            let a = parseFloat(document.querySelector("#vara").value);
+            let base = document.querySelector("#varb").value;
+            let c;
+            
+            if (base === "" || base === "10") {
+                c = Math.log10(a);
+                agregarHistorial(`log₁₀(${a}) = ${c}`);
+            } else if (base === "e") {
+                c = Math.log(a);
+                agregarHistorial(`ln(${a}) = ${c}`);
+            } else {
+                let b = parseFloat(base);
+                c = Math.log(a) / Math.log(b);
+                agregarHistorial(`log₍${b}₎(${a}) = ${c}`);
+            }
+            
+            document.querySelector("#varc").value = c;
+        }
+
+        function funcionesTrigonometricas() {
+            let funcion = document.querySelector("#vara").value.toLowerCase().trim();
+            let valor = parseFloat(document.querySelector("#varb").value);
+            let c;
+
+            // Convertir grados a radianes
+            let rad = (valor * Math.PI) / 180;
+
+            switch (funcion) {
+                case "sen":
+                case "sin":
+                    c = Math.sin(rad);
+                    agregarHistorial(`sen(${valor}°) = ${c}`);
+                    break;
+                case "cos":
+                    c = Math.cos(rad);
+                    agregarHistorial(`cos(${valor}°) = ${c}`);
+                    break;
+                case "tan":
+                    c = Math.tan(rad);
+                    agregarHistorial(`tan(${valor}°) = ${c}`);
+                    break;
+                case "csc":
+                    c = 1 / Math.sin(rad);
+                    agregarHistorial(`csc(${valor}°) = ${c}`);
+                    break;
+                case "sec":
+                    c = 1 / Math.cos(rad);
+                    agregarHistorial(`sec(${valor}°) = ${c}`);
+                    break;
+                case "cot":
+                    c = 1 / Math.tan(rad);
+                    agregarHistorial(`cot(${valor}°) = ${c}`);
+                    break;
+                case "asen":
+                case "asin":
+                    c = (Math.asin(valor) * 180) / Math.PI;
+                    agregarHistorial(`asen(${valor}) = ${c}°`);
+                    break;
+                case "acos":
+                    c = (Math.acos(valor) * 180) / Math.PI;
+                    agregarHistorial(`acos(${valor}) = ${c}°`);
+                    break;
+                case "atan":
+                    c = (Math.atan(valor) * 180) / Math.PI;
+                    agregarHistorial(`atan(${valor}) = ${c}°`);
+                    break;
+                default:
+                    c = "Función no válida. Use: sen, cos, tan, csc, sec, cot, asen, acos, atan";
+            }
+
+            document.querySelector("#varc").value = c;
+        }
+
+        function factorial() {
+            let n = parseInt(document.querySelector("#vara").value);
+            if (n < 0) {
+                document.querySelector("#varc").value = "Error: No existe factorial de negativos";
+                return;
+            }
+            let resultado = 1;
+            for (let i = 2; i <= n; i++) {
+                resultado *= i;
+            }
+            document.querySelector("#varc").value = resultado;
+            agregarHistorial(`${n}! = ${resultado}`);
+        }
+
+        function porcentaje() {
+            let a = parseFloat(document.querySelector("#vara").value);
+            let b = parseFloat(document.querySelector("#varb").value);
+            let c = (a * b) / 100;
+            document.querySelector("#varc").value = c;
+            agregarHistorial(`${b}% de ${a} = ${c}`);
+        }
+
+        function limpiar() {
+            document.querySelector("#vara").value = '';
+            document.querySelector("#varb").value = '';
+            document.querySelector("#varc").value = '';
+        }
+
+        let historial = [];
+
+        function agregarHistorial(operacion) {
+            historial.unshift(operacion);
+            if (historial.length > 8) {
+                historial.pop();
+            }
+            actualizarHistorial();
+        }
+
+        function actualizarHistorial() {
+            const historialDiv = document.querySelector("#historial");
+            historialDiv.innerHTML = historial.map(item => 
+                `<div class="history-item">${item}</div>`
+            ).join('');
+        }
+
+        function limpiarHistorial() {
+            historial = [];
+            actualizarHistorial();
+        }
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e1e2f 0%, #2e2e48 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        .calculadora {
+            background: linear-gradient(145deg, #2a2a3e, #1f1f2e);
+            color: white;
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 28px;
+            background: linear-gradient(90deg, #4a90e2, #9013fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .inputs-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #3a3a4e;
+            border-radius: 12px;
+            text-align: center;
+            background: #1a1a2e;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 15px rgba(74, 144, 226, 0.3);
+        }
+
+        input::placeholder {
+            color: #666;
+        }
+
+        .constantes {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            justify-content: center;
+        }
+
+        .const-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            transition: all 0.3s ease;
+        }
+
+        .const-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .botones {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            background: linear-gradient(135deg, #4a90e2 0%, #9013fe 100%);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #9013fe 0%, #4a90e2 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .funciones {
+            margin-top: 15px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .funciones button {
+            background: linear-gradient(135deg, #ff4081 0%, #ff6e40 100%);
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        .funciones button:hover {
+            background: linear-gradient(135deg, #ff6e40 0%, #ff4081 100%);
+        }
+
+        .resultado-container {
+            margin-top: 20px;
+        }
+
+        .label {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        #varc {
+            font-size: 24px;
+            font-weight: bold;
+            background: #0f0f1e;
+            border-color: #4a90e2;
+        }
+
+        .clear-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            margin-top: 15px;
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        .historial-container {
+            margin-top: 20px;
+            padding: 15px;
+            background: #1a1a2e;
+            border-radius: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .historial-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .historial-title {
+            font-weight: 600;
+            color: #4a90e2;
+        }
+
+        .clear-history {
+            background: none;
+            border: 1px solid #ff4081;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 8px;
+            color: #ff4081;
+        }
+
+        .history-item {
+            padding: 8px;
+            color: #ccc;
+            font-size: 13px;
+            border-bottom: 1px solid #2a2a3e;
+            font-family: 'Courier New', monospace;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a2e;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4a90e2;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculadora">
+        <h1> Calculadora Científica</h1>
+
+        <div class="constantes">
+            <button class="const-btn" onclick="insertarPi('vara')" title="Insertar π en campo 1">π → 1</button>
+            <button class="const-btn" onclick="insertarPi('varb')" title="Insertar π en campo 2">π → 2</button>
+            <button class="const-btn" onclick="insertarE('vara')" title="Insertar e en campo 1">e → 1</button>
+            <button class="const-btn" onclick="insertarE('varb')" title="Insertar e en campo 2">e → 2</button>
+        </div>
+
+        <div class="inputs-container">
+            <input type="text" id="vara" placeholder="Número 1 o función">
+            <input type="text" id="varb" placeholder="Número 2 o ángulo">
+        </div>
+        
+        <div class="botones">
+            <button onclick="suma()" title="Suma">+</button>
+            <button onclick="resta()" title="Resta">−</button>
+            <button onclick="multiplicacion()" title="Multiplicación">×</button>
+            <button onclick="division()" title="División">÷</button>
+            <button onclick="exponente()" title="Potencia">xⁿ</button>
+        </div>
+
+        <div class="funciones">
+            <button onclick="raizCuadrada()">√ Raíz</button>
+            <button onclick="factorial()">n! Factorial</button>
+            <button onclick="logaritmo()">log Logaritmo</button>
+            <button onclick="porcentaje()">% Porcentaje</button>
+            <button onclick="funcionesTrigonometricas()"> Trigonometría</button>
+            <button onclick="limpiar()"> Limpiar</button>
+        </div>
+
+        <div class="resultado-container">
+            <div class="label">Resultado:</div>
+            <input type="text" id="varc" readonly>
+        </div>
+
+        <div class="historial-container">
+            <div class="historial-header">
+                <span class="historial-title"> Historial</span>
+                <button class="clear-history" onclick="limpiarHistorial()">Borrar</button>
+            </div>
+            <div id="historial"></div>
+        </div>
+    </div>
+</body>
+</html>
